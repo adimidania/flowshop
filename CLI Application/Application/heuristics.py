@@ -39,7 +39,8 @@ def johnson_method(processing_times):
     m2 = []
     
     if machines != 2:
-        raise Exception("Johson method only works with two machines")
+        print("Johson method only works with two machines")
+        return []
         
     for i in range(jobs):
         minimum = copy_processing_times.min()

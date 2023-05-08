@@ -35,3 +35,13 @@ def brute_force(processing_times, permutations):
             M = m
             sol = permutation
     return sol, M
+
+''' Generate random data with n jobs and m machines '''
+def generate_data(n, m):
+    rnd_data = np.random.randint(size=(n,m), low=5, high=120)
+    return rnd_data
+
+''' Generate random solution of n jobs '''
+def generate_seq(n):
+    permutation = np.random.permutation(n).tolist()
+    return permutation
