@@ -1,119 +1,11 @@
-import time
 from colorama import Fore, Style
 from tqdm import tqdm
 from rich.console import Console
 from rich import print
 from rich.text import Text
 from rich.emoji import Emoji
-from branch_and_bound import *
-from heuristics import *
-from local_search import *
-from utils import *
+from calls import *
 
-def initialization(data):
-    print('Possible initializations.')
-    print('1- Random initialization')
-    print('2- With NEH heuristic')
-    print('3- With Johnson heuristic')
-    print('4- With Ham heuristic')
-    print('5- With Palmer heuristic')
-    print('6- With CDS heuristic')
-    print('7- With Gupta heuristic')
-    print('8- With PRSKE heuristic')
-    print('9- With Artificial heuristic')
-    choice = int(input("Enter the number of the chosen initialization: "))
-    while True:
-        if choice == 1:
-            sequence = generate_seq(data.shape[0])
-            break
-        elif choice == 2:
-            sequence, _ = neh_algorithm(data)
-            break
-        elif choice == 3:
-            sequence = johnson_method(data)
-            if len(sequence) != 0:
-                break
-            else:
-                choice = int(input("Enter the number of the chosen initialization: "))
-        elif choice == 4:
-            sequence, _ = ham_heuristic(data)
-            break
-        elif choice == 5:
-            sequence = palmer_heuristic(data)
-            break
-        elif choice == 6:
-            sequence, _ = CDS_heuristic(data)
-            break
-        elif choice == 7:
-            sequence = gupta_heuristic(data)
-            break
-        elif choice == 8:
-            sequence, _ = PRSKE_heuristic(data)
-            break
-        elif choice == 9:
-            sequence, _ = artificial_heuristic(data)
-            break
-        else:
-            print("Invalid choice, please enter a valid choice.")
-            choice = int(input("Enter the number of the chosen initialization: "))
-    return sequence
-
-def choose_heuristic(data):
-    print('Possible heuristics.')
-    print('1- NEH heuristic')
-    print('2- Johnson heuristic')
-    print('3- Ham heuristic')
-    print('4- Palmer heuristic')
-    print('5- CDS heuristic')
-    print('6- Gupta heuristic')
-    print('7- PRSKE heuristic')
-    print('8- Artificial heuristic')
-    choice = int(input("Enter the number of the chosen heuristic: "))
-    if choice == 1:
-        start_time = time.time()
-        sequence, cmax = neh_algorithm(data)
-        elapsed_time = time.time() - start_time
-    elif choice == 2:
-        start_time = time.time()
-        sequence = johnson_method(data)
-        elapsed_time = time.time() - start_time
-        if len(sequence) == 0:
-            return None
-        else:
-            cmax = evaluate_sequence(sequence, data)
-    elif choice == 3:
-        start_time = time.time()
-        sequence, cmax = ham_heuristic(data)
-        elapsed_time = time.time() - start_time
-    elif choice == 4:
-        start_time = time.time()
-        sequence = palmer_heuristic(data)
-        cmax = evaluate_sequence(sequence, data)
-        elapsed_time = time.time() - start_time
-    elif choice == 5:
-        start_time = time.time()
-        sequence, cmax = CDS_heuristic(data)
-        elapsed_time = time.time() - start_time
-    elif choice == 6:
-        start_time = time.time()
-        sequence = gupta_heuristic(data)
-        cmax = evaluate_sequence(sequence, data)
-        elapsed_time = time.time() - start_time
-    elif choice == 7:
-        start_time = time.time()
-        sequence, cmax = PRSKE_heuristic(data)
-        elapsed_time = time.time() - start_time
-    elif choice == 8:
-        start_time = time.time()
-        sequence, cmax = artificial_heuristic(data)
-        elapsed_time = time.time() - start_time
-    else:
-        print('Invalid choice.')
-        return None
-    print('\n**Results**')
-    print(f'Generated sequence is {sequence} with a makespan of {cmax}.')
-    print(f'Elapsed time of {elapsed_time} seconds.\n')   
-        
 menu_items = [
     "1. Branch and Bound",
     "2. Heuristics",
@@ -183,14 +75,15 @@ def get_user_choice():
             return choice
         except ValueError:
             print("Invalid choice. Please try again.")
+
 def handle_choice(choice):
+    # Branch and Bound
     if choice == 1:
         num_jobs = int(input("Enter the number of jobs: "))
         num_machines = int(input("Enter the number of machines: "))
         data = generate_data(num_jobs, num_machines)
-        sequence = initialization(data)
-        cmax = evaluate_sequence(sequence, data)
-        print(f'Generated sequence is {sequence} with a makespan of {cmax}.')
+
+        sequence, cmax = initialization()
         print('\n**Results**')
         start_time = time.time()
         best_solution, best_cost, i = branch_and_bound(data, sequence, cmax)
@@ -198,18 +91,47 @@ def handle_choice(choice):
         print(f'Best sequence is {best_solution} with a makespan of {best_cost}.')
         print(f'No. Nodes visited is {i}.')
         print(f'Elapsed time of {elapsed_time} seconds.\n')
+    # Heuristics
     elif choice == 2:
         num_jobs = int(input("Enter the number of jobs: "))
         num_machines = int(input("Enter the number of machines: "))
         data = generate_data(num_jobs, num_machines)
-        choose_heuristic(data)
+        sequence, cmax, elapsed_time = heuristics(data)
+        print('\n**Results**')
+        print(f'Best sequence is {sequence} with a makespan of {cmax}.')
+        print(f'Elapsed time of {elapsed_time} seconds.\n')
+    # Metaheuristics
     elif choice == 3:
-        print("You chose Option 3.")
+        num_jobs = int(input("Enter the number of jobs: "))
+        num_machines = int(input("Enter the number of machines: "))
+        data = generate_data(num_jobs, num_machines)
+        print('Choose the metaheuristic type.')
+        print('1- Local search based metaheuristics.')
+        print('2- Population based metaheuristics.')
+        choice = int(input("Enter the number of the chosen type: "))
+        sequence = []
+        cmax = 0
+        elapsed_time = 0
+        while True:
+            if choice == 1:
+                sequence, cmax, elapsed_time = localsearch(data)
+                break
+            elif choice == 2:
+                sequence, cmax, elapsed_time = heuristics(data)
+                break
+            else:
+                print("Invalid choice, please enter a valid choice.")
+                choice = int(input("Enter the number of the chosen type: "))
+        
+        print('\n**Results**')
+        print(f'Best sequence is {sequence} with a makespan of {cmax}.')
+        print(f'Elapsed time of {elapsed_time} seconds.\n')
     elif choice == 4:
         print("Exiting program...")
         time.sleep(1)
         display_goodbye()
         exit()
+
 def main():
     display_welcome()
     display_TEAM()
@@ -217,7 +139,6 @@ def main():
     time.sleep(1)
     print("-----------------------------------")
     print("Hang tight! Good things take time!",":heart_eyes:")
-
     with tqdm(total=50) as pbar:
         for i in range(10):
             pbar.update(10)
