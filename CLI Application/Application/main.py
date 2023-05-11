@@ -15,33 +15,31 @@ menu_items = [
 
 menu_color = Fore.LIGHTBLUE_EX
 menu_highlight_color = Fore.WHITE + Style.BRIGHT
-input_color = Fore.YELLOW
+input_color = Fore.GREEN
 input_prompt = "> "
 
-def display_welcome():
-    print(Fore.YELLOW + r"""
-
- ▄█     █▄     ▄████████  ▄█        ▄████████  ▄██████▄    ▄▄▄▄███▄▄▄▄      ▄████████ 
-███     ███   ███    ███ ███       ███    ███ ███    ███ ▄██▀▀▀███▀▀▀██▄   ███    ███ 
-███     ███   ███    █▀  ███       ███    █▀  ███    ███ ███   ███   ███   ███    █▀  
-███     ███  ▄███▄▄▄     ███       ███        ███    ███ ███   ███   ███  ▄███▄▄▄     
-███     ███ ▀▀███▀▀▀     ███       ███        ███    ███ ███   ███   ███ ▀▀███▀▀▀     
-███     ███   ███    █▄  ███       ███    █▄  ███    ███ ███   ███   ███   ███    █▄  
-███ ▄█▄ ███   ███    ███ ███▌    ▄ ███    ███ ███    ███ ███   ███   ███   ███    ███ 
- ▀███▀███▀    ██████████ █████▄▄██ ████████▀   ▀██████▀   ▀█   ███   █▀    ██████████ 
-                         ▀                                                         """)
 def display_TEAM():
-    print(Fore.RED + r"""  _____                 _     _           _     
-  / ____|               | |   (_)         (_)    
- | (___  _   _ _ __ ___ | |__  _  ___  ___ _ ___ 
-  \___ \| | | | '_ ` _ \| '_ \| |/ _ \/ __| / __|
-  ____) | |_| | | | | | | |_) | | (_) \__ \ \__ \
- |_____/ \__, |_| |_| |_|_.__/|_|\___/|___/_|___/
-          __/ |                                  
-         |___/                                   
+    print(Fore.LIGHTMAGENTA_EX + r"""
+╔═╗┬ ┬┌┬┐┌┐ ┬┌─┐┌─┐┬┌─┐
+╚═╗└┬┘│││├┴┐││ │└─┐│└─┐
+╚═╝ ┴ ┴ ┴└─┘┴└─┘└─┘┴└─┘  
+  ______________________
+ |  __________________  |
+ | |Rezkellah Rania   | |
+ | |Adimi Dania       | |
+ | |Irmouli Maissa    | |
+ | |Hamzaoui Imene    | |
+ | |Benazzoug Houda   | |
+ | |Hamitouche Thanina| |
+ |______________________|
+     _[_______]_      
+ ___[___________]___          
+|         [_____] []|
+|         [_____] []|
+|___________________|                                         
 """)
 def display_DEMO():
-    print(Fore.CYAN + r""" 
+    print(Fore.LIGHTMAGENTA_EX + r""" 
 
 ██████  ███████ ███    ███  ██████      ████████  ██████  ██  █████  
 ██   ██ ██      ████  ████ ██    ██        ██    ██    ██ ██ ██   ██ 
@@ -61,8 +59,9 @@ def display_goodbye():
  ╚═════╝  ╚═════╝  ╚═════╝ ╚═════╝     ╚═════╝    ╚═╝   ╚══════╝
 """)
 def display_menu():
-    print(menu_color + "MENU")
-    print("-" * 20)
+    print('\n \n \n')
+    print(menu_color + "-------------------------------- MENU ----------------------------------")
+   
     for item in menu_items:
         print(menu_color + item)
     print()
@@ -79,36 +78,45 @@ def get_user_choice():
 def handle_choice(choice):
     # Branch and Bound
     if choice == 1:
-        num_jobs = int(input("Enter the number of jobs: "))
-        num_machines = int(input("Enter the number of machines: "))
+        num_jobs = int(input(Fore.GREEN + "Enter the number of jobs: "))
+        num_machines = int(input(Fore.GREEN+"Enter the number of machines: "))
         data = generate_data(num_jobs, num_machines)
+        sequence, cmax = initialization(data)
 
-        sequence, cmax = initialization()
-        print('\n**Results**')
+        print('-------------------------------------  RESULTS --------------------------------------------------')
         start_time = time.time()
         best_solution, best_cost, i = branch_and_bound(data, sequence, cmax)
         elapsed_time = time.time() - start_time
-        print(f'Best sequence is {best_solution} with a makespan of {best_cost}.')
-        print(f'No. Nodes visited is {i}.')
-        print(f'Elapsed time of {elapsed_time} seconds.\n')
+        print(Fore.WHITE+f'Best sequence is {best_solution} with a makespan of {best_cost}.')
+        print('------------------------------------------------------------------------------------')
+        print(Fore.GREEN+f'No. Nodes visited is {i}.')
+        print(Fore.WHITE+'-------------------------------------------------------------------------')
+        print(Fore.GREEN+f'Elapsed time of {elapsed_time} seconds.\n')
+        print('-------------------------------------- End of B&B ------------------------------------')
     # Heuristics
+    
     elif choice == 2:
-        num_jobs = int(input("Enter the number of jobs: "))
-        num_machines = int(input("Enter the number of machines: "))
+        num_jobs = int(input(Fore.BLUE+"Enter the number of jobs: "))
+        num_machines = int(input(Fore.BLUE+"Enter the number of machines: "))
         data = generate_data(num_jobs, num_machines)
         sequence, cmax, elapsed_time = heuristics(data)
-        print('\n**Results**')
-        print(f'Best sequence is {sequence} with a makespan of {cmax}.')
-        print(f'Elapsed time of {elapsed_time} seconds.\n')
+        
+        print('------------------------------------- RESULTS -----------------------------------------------')
+        
+        print(Fore.BLUE+f'Best sequence is {sequence} with a makespan of {cmax}.')
+        print('---------------------------------------------------------------------------------')
+        print(Fore.BLUE+f'Elapsed time of {elapsed_time} seconds.\n')
+        print('---------------------------------- End of heuristics ------------------------------------------')
     # Metaheuristics
     elif choice == 3:
-        num_jobs = int(input("Enter the number of jobs: "))
-        num_machines = int(input("Enter the number of machines: "))
+        num_jobs = int(input(Fore.CYAN+"Enter the number of jobs: "))
+        num_machines = int(input(Fore.CYAN+"Enter the number of machines: "))
         data = generate_data(num_jobs, num_machines)
-        print('Choose the metaheuristic type.')
-        print('1- Local search based metaheuristics.')
-        print('2- Population based metaheuristics.')
-        choice = int(input("Enter the number of the chosen type: "))
+        
+        print(Fore.YELLOW+'Choose the metaheuristic type.')
+        print(Fore.CYAN+'1- Local search based metaheuristics.')
+        print(Fore.CYAN+'2- Population based metaheuristics.')
+        choice = int(input(Fore.YELLOW+"Enter the number of the chosen type: "))
         sequence = []
         cmax = 0
         elapsed_time = 0
@@ -120,26 +128,31 @@ def handle_choice(choice):
                 sequence, cmax, elapsed_time = heuristics(data)
                 break
             else:
-                print("Invalid choice, please enter a valid choice.")
-                choice = int(input("Enter the number of the chosen type: "))
+                print(menu_color=Fore.RED+"Invalid choice, please enter a valid choice.")
+                choice = int(input(Fore.WHITE+"Enter the number of the chosen type: "))
         
-        print('\n**Results**')
-        print(f'Best sequence is {sequence} with a makespan of {cmax}.')
-        print(f'Elapsed time of {elapsed_time} seconds.\n')
+        print('-'*43,'RESULTS','-'*43)
+        print(Fore.CYAN+f'Best sequence is {sequence} with a makespan of {cmax}.')
+        print('-'*100)
+        print(menu_color=Fore.CYAN+f'Elapsed time of {elapsed_time} seconds.\n')
+        print('---------------------------------- End of Methaheuristics -----------------------')
     elif choice == 4:
-        print("Exiting program...")
+        print('-'*100)
+        print(Fore.RED+"Exiting program, take care! ")
         time.sleep(1)
         display_goodbye()
         exit()
 
 def main():
-    display_welcome()
     display_TEAM()
     display_DEMO()
     time.sleep(1)
-    print("-----------------------------------")
-    print("Hang tight! Good things take time!",":heart_eyes:")
-    with tqdm(total=50) as pbar:
+    print("-"*95)
+    print('\n')
+    print('\n')
+    print('\n')
+    print(Fore.LIGHTGREEN_EX+"Hang tight! Good things take time!",":heart_eyes:")
+    with tqdm(total=100) as pbar:
         for i in range(10):
             pbar.update(10)
             time.sleep(0.5)
