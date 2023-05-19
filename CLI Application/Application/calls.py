@@ -147,7 +147,7 @@ def localsearch(data):
     return sequence, cmax, elapsed_time
 
 def population(data):
-    print('\Available population based metaheuristics.')
+    print('\nAvailable population based metaheuristics.')
     print("1- Genetic algorithm")
     print("2- Ant colony algorithm")
     print("3- Hybrid algorithm")
@@ -161,7 +161,7 @@ def population(data):
             mutation_probability = float(input("Enter the value of mutation probability: "))
             select_pop_size = float(input("Enter the value of select_pop_size: "))
             # Selection method
-            print('\Choose one of the following selection strategies.')
+            print('\nChoose one of the following selection strategies.')
             print("1- Roulette")
             print("2- Elitism")
             print("3- Rank")
@@ -180,7 +180,7 @@ def population(data):
                 selection = 'roulette'
                 print('Invalid choice. Roulette has been selected!')
             # Crossover method
-            print('\Choose one of the following crossover methods.')
+            print('\nChoose one of the following crossover methods.')
             print("1- One point crossover")
             print("2- Two points crossover")
             choice = int(input("Enter the number of the chosen method: "))
