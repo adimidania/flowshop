@@ -1,4 +1,5 @@
 import numpy as np
+import random
 from utils import evaluate_sequence
 
 '''NEH'''
@@ -29,6 +30,47 @@ def neh_algorithm(processing_times):
                 best_sequence = new_sequence
         sequence = best_sequence
     return sequence, Cmax
+
+'''Greedy NEH'''
+def greedy_neh_algorithm(processing_times, num_candidates, num_iterations):
+    n = len(processing_times)
+    ordered_sequence = order_jobs_in_descending_order_of_total_completion_time(processing_times)
+    best_sequence = []
+    best_cmax = float('inf')
+    for i in range(num_iterations):
+        partial_sequence = [ordered_sequence[0]]
+        for k in range(1, n):
+            candidates = []
+            for job in ordered_sequence:
+                if job not in partial_sequence:
+                    for i in range(k+1):
+                        candidate_sequence = insertion(partial_sequence, i, job)
+                        candidate_cmax = evaluate_sequence(candidate_sequence, processing_times)
+                        candidates.append((candidate_sequence, candidate_cmax))
+            candidates.sort(key=lambda x: x[1])
+            partial_sequence, cmax = random.choice(candidates[:num_candidates])
+        if cmax < best_cmax:
+                best_sequence = partial_sequence
+                best_cmax = cmax
+        ordered_sequence.append(ordered_sequence.pop(0))
+    return best_sequence, best_cmax
+
+def GRNEH(processing_times, num_candidates):
+    n = len(processing_times)
+    ordered_sequence = order_jobs_in_descending_order_of_total_completion_time(processing_times)
+    partial_sequence = [ordered_sequence[0]]
+    for k in range(1, n):
+        candidates = []
+        for job in ordered_sequence:
+            if job not in partial_sequence:
+                for i in range(k+1):
+                    candidate_sequence = insertion(partial_sequence, i, job)
+                    candidate_cmax = evaluate_sequence(candidate_sequence, processing_times)
+                    candidates.append((candidate_sequence, candidate_cmax))
+        candidates.sort(key=lambda x: x[1])
+        partial_sequence, cmax = random.choice(candidates[:num_candidates])
+    return partial_sequence, cmax
+
 
 '''Johnson'''
 def johnson_method(processing_times):

@@ -28,7 +28,7 @@ def display_TEAM():
  | |Rezkellah Rania   | |
  | |Adimi Dania       | |
  | |Irmouli Maissa    | |
- | |Hamzaoui Imene    | |
+ | |Hamzaoui Imane    | |
  | |Benazzoug Houda   | |
  | |Hamitouche Thanina| |
  |______________________|
@@ -125,7 +125,7 @@ def handle_choice(choice):
                 sequence, cmax, elapsed_time = localsearch(data)
                 break
             elif choice == 2:
-                sequence, cmax, elapsed_time = heuristics(data)
+                sequence, cmax, elapsed_time = population(data)
                 break
             else:
                 print(menu_color=Fore.RED+"Invalid choice, please enter a valid choice.")

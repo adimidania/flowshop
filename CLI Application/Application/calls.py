@@ -3,6 +3,7 @@ from branch_and_bound import *
 from heuristics import *
 from local_search import *
 from utils import *
+from metaheuristics_population import *
 
 def initialization(data):
     print('Choose the intialization option.')
@@ -138,6 +139,89 @@ def localsearch(data):
             k_max = int(input("Enter value of the parameter k_max: "))
             start_time = time.time()
             sequence, cmax = vns(sequence, data, nb_iter, k_max)
+            elapsed_time = time.time() - start_time
+            break
+        else:
+            print("Invalid choice, please enter a valid choice.")
+            choice = int(input("Enter the number of the chosen metaheuristic: "))
+    return sequence, cmax, elapsed_time
+
+
+def population(data):
+    print('\Available population based metaheuristics.')
+    print("1- Genetic algorithm")
+    print("2- Ant colony algorithm")
+    print("3- Hybrid algorithm")
+    choice = int(input("Enter the number of the chosen metaheuristic: "))
+    while True: 
+        # Genetic Algorithm
+        if choice == 1:
+            sequence, cmax = initialization(data)
+            nb_iter = int(input("Enter number of iterations: "))
+            pop_size = int(input("Enter the value of population size: "))
+            mutation_probability = float(input("Enter the value of mutation probability: "))
+            select_pop_size = float(input("Enter the value of select_pop_size: "))
+            # Selection method
+            print('\Choose one of the following selection strategies.')
+            print("1- Roulette")
+            print("2- Elitism")
+            print("3- Rank")
+            print("4- Tournament")
+            choice = int(input("Enter the number of the chosen strategy: "))
+            selection = ''
+            if choice == 1:
+                selection = 'roulette'
+            elif choice == 2:
+                selection = 'Elitism'
+            elif choice == 3:
+                selection = 'rank'
+            elif choice == 4:
+                selection = 'tournament'
+            else:
+                selection = 'roulette'
+                print('Invalid choice. Roulette has been selected!')
+            # Crossover method
+            print('\Choose one of the following crossover methods.')
+            print("1- One point crossover")
+            print("2- Two points crossover")
+            choice = int(input("Enter the number of the chosen method: "))
+            crossover = ''
+            if choice == 1:
+                crossover = 'ONE'
+            elif choice == 2:
+                crossover = 'TWO'
+            else:
+                print('Invalid choice. Two point crossover has been selected!')
+                crossover = 'TWO'
+            init_pop = [np.random.permutation(data.shape[0]).tolist() for i in range(pop_size)]
+            start_time = time.time()
+            sequence, cmax = genetic_algorithm(data, init_pop, pop_size, select_pop_size, selection, crossover, mutation_probability, nb_iter)
+            elapsed_time = time.time() - start_time
+            break
+        # Ant Colony
+        elif choice == 2:
+            sequence, cmax = initialization(data)
+            num_ants = int(input("Enter number of ants: "))
+            num_iterations = int(input("Enter number of iterations: "))
+            tau0 = float(input("Enter value of the parametertau0: "))
+            alpha = float(input("Enter value of the parameter alpha: "))
+            beta = float(input("Enter value of the parameter beta: "))
+            Q = float(input("Enter value of the parameter Q: "))
+            evaporation_rate = float(input("Enter value of evaporation_rate: "))
+            q0 = float(input("Enter value of the parameter q0: "))
+            start_time = time.time()
+            sequence, cmax = ant_colony_optimization(num_ants, num_iterations, alpha, beta, evaporation_rate, Q, tau0, q0, data)
+            elapsed_time = time.time() - start_time
+            break
+        # Hybrid
+        elif choice == 3:
+            sequence, cmax = initialization(data)
+            pop_size = int(input("Enter number of population size: "))
+            a = float(input("Enter number of the parameter a: "))
+            num_iterations = int(input("Enter number of iterations: "))
+            popul = init_pop(data, pop_size, a)
+            start_time = time.time()
+            sequence, cmax = NEGA(popul, data, num_iterations)
             elapsed_time = time.time() - start_time
             break
         else:
