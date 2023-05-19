@@ -78,11 +78,8 @@ def get_user_choice():
 def handle_choice(choice):
     # Branch and Bound
     if choice == 1:
-        num_jobs = int(input(Fore.GREEN + "Enter the number of jobs: "))
-        num_machines = int(input(Fore.GREEN+"Enter the number of machines: "))
-        data = generate_data(num_jobs, num_machines)
+        data = processing_times()
         sequence, cmax = initialization(data)
-
         print('-------------------------------------  RESULTS --------------------------------------------------')
         start_time = time.time()
         best_solution, best_cost, i = branch_and_bound(data, sequence, cmax)
@@ -96,11 +93,8 @@ def handle_choice(choice):
     # Heuristics
     
     elif choice == 2:
-        num_jobs = int(input(Fore.BLUE+"Enter the number of jobs: "))
-        num_machines = int(input(Fore.BLUE+"Enter the number of machines: "))
-        data = generate_data(num_jobs, num_machines)
+        data = processing_times()
         sequence, cmax, elapsed_time = heuristics(data)
-        
         print('------------------------------------- RESULTS -----------------------------------------------')
         
         print(Fore.BLUE+f'Best sequence is {sequence} with a makespan of {cmax}.')
@@ -109,10 +103,7 @@ def handle_choice(choice):
         print('---------------------------------- End of heuristics ------------------------------------------')
     # Metaheuristics
     elif choice == 3:
-        num_jobs = int(input(Fore.CYAN+"Enter the number of jobs: "))
-        num_machines = int(input(Fore.CYAN+"Enter the number of machines: "))
-        data = generate_data(num_jobs, num_machines)
-        
+        data = processing_times()
         print(Fore.YELLOW+'Choose the metaheuristic type.')
         print(Fore.CYAN+'1- Local search based metaheuristics.')
         print(Fore.CYAN+'2- Population based metaheuristics.')
@@ -131,7 +122,7 @@ def handle_choice(choice):
                 print(menu_color=Fore.RED+"Invalid choice, please enter a valid choice.")
                 choice = int(input(Fore.WHITE+"Enter the number of the chosen type: "))
         
-        print('-'*43,'RESULTS','-'*43)
+        print('------------------------------------- RESULTS -----------------------------------------------')
         print(Fore.CYAN+f'Best sequence is {sequence} with a makespan of {cmax}.')
         print('-'*100)
         print(menu_color=Fore.CYAN+f'Elapsed time of {elapsed_time} seconds.\n')

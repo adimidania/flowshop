@@ -146,7 +146,6 @@ def localsearch(data):
             choice = int(input("Enter the number of the chosen metaheuristic: "))
     return sequence, cmax, elapsed_time
 
-
 def population(data):
     print('\Available population based metaheuristics.')
     print("1- Genetic algorithm")
