@@ -13,3 +13,9 @@ Note that all the algorithms have been implemented based our coursework, you can
 Made with ❤️ by Symbiosis team 🐝.
 
 If you have any remarks or inqueries. Please feel free to contact one of the collaborators.
+_Adimi Alaa Dania_: ja_adimi@esi.dz.
+_Rezkellah Rania FatmaZohra_: jf_rezkellah@esi.dz.
+_Benazzoug Nourelhouda_: jn_benazzoug@esi.dz.
+_Hamzaoui Imane_: ji_hamzaoui@esi.dz.
+_Irmouli Maissa_: jm_irmouli@esi.dz.
+_Hamitouche Thanina_: jt_hamitouche@esi.dz.
